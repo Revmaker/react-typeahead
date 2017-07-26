@@ -189,6 +189,11 @@ var Typeahead = React.createClass({
 
   _replaceWord(value) {
     var tokens = value.split(' ');
+    var openBracketIndex = value.lastIndexOf('{{');
+    var closeBracketIndex = value.lastIndexOf('}}');
+    if (openBracketIndex > -1 && openBracketIndex > closeBracketIndex) {
+      return value.substr(openBracketIndex);
+    }
     return (tokens.length === 0) ? value : tokens[tokens.length - 1];
   },
 
