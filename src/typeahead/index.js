@@ -4,6 +4,7 @@ var TypeaheadSelector = require('./selector');
 var KeyEvent = require('../keyevent');
 var fuzzy = require('fuzzy');
 var classNames = require('classnames');
+var lineheight = 20;
 
 /**
  * A "typeahead", an auto-completing text input
@@ -104,7 +105,11 @@ var Typeahead = React.createClass({
       isFocused: false,
 
       // true when focused, false onOptionSelected
-      showResults: false
+      showResults: false,
+
+
+      // Number of rows to show for a text area
+      rows: 1
     };
   },
 
@@ -300,6 +305,16 @@ var Typeahead = React.createClass({
     }
 
     this._onTextEntryUpdated();
+
+    var oldRows = event.target.rows;
+    event.target.rows = 1;
+    var newRows = Math.floor(event.target.scrollHeight / lineheight);
+
+    if (newRows === oldRows) {
+      event.target.rows = newRows;
+    }
+
+    this.setState({ rows: newRows });
   },
 
   _onKeyDown: function(event) {
@@ -330,6 +345,13 @@ var Typeahead = React.createClass({
     });
   },
 
+  componentDidMount: function() {
+    if (this.refs.entry) {
+      const numRows = Math.floor(this.refs.entry.scrollHeight / lineheight);
+      this.setState({ rows: numRows });
+    }
+  },
+
   render: function() {
     var inputClasses = {};
     inputClasses[this.props.customClasses.input] = !!this.props.customClasses.input;
@@ -349,6 +371,7 @@ var Typeahead = React.createClass({
           disabled={this.props.disabled}
           {...this.props.inputProps}
           placeholder={this.props.placeholder}
+          rows={this.state.rows}
           className={inputClassList}
           value={this.state.entryValue}
           onChange={this._onChange}
