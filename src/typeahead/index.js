@@ -187,6 +187,11 @@ var Typeahead = React.createClass({
     return this.state.searchResults[index];
   },
 
+  _replaceWord(value) {
+    var tokens = value.split(' ');
+    return (tokens.length === 0) ? value : tokens[tokens.length - 1];
+  },
+
   _onOptionSelected: function(option, event) {
     var nEntry = this.refs.entry;
     nEntry.focus();
@@ -198,10 +203,15 @@ var Typeahead = React.createClass({
     var formInputOptionString = formInputOption(option);
 
     nEntry.value = optionString;
+
+    var entryValue = this.state.entryValue;
+    var replaceWord = this._replaceWord(entryValue);
+    var lastReplaceWordIndex = entryValue.lastIndexOf(replaceWord);
+    var valueBefore = entryValue.substring(0, lastReplaceWordIndex);
+
     this.setState({searchResults: this.getOptionsForValue(optionString, this.props.options),
                    selection: formInputOptionString,
-                   entryValue: optionString,
-                   showResults: false});
+                   entryValue: valueBefore.concat(optionString) });
     return this.props.onOptionSelected(option, event);
   },
 
