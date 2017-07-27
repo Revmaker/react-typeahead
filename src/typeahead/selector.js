@@ -1,4 +1,5 @@
 var React = require('react');
+var ReactDOM = require('react-dom');
 var TypeaheadOption = require('./option');
 var classNames = require('classnames');
 
@@ -30,6 +31,15 @@ var TypeaheadSelector = React.createClass({
       onOptionSelected: function(option) { },
       defaultClassNames: true
     };
+  },
+
+  componentDidUpdate() {
+    Object.keys(this.refs).forEach((key) => {
+      var ref = this.refs[key];
+      if (ref.props.hover) {
+        ReactDOM.findDOMNode(ref).scrollIntoView();
+      }
+    });
   },
 
   render: function() {
@@ -87,10 +97,8 @@ var TypeaheadSelector = React.createClass({
       );
     }
 
-    const style = { top: this.props.caretPosition.top + 30, left: this.props.caretPosition.left - 10 };
-
     return (
-      <ul className={classList} style={style}>
+      <ul className={classList}>
         { customValue }
         { results }
       </ul>
