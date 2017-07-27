@@ -193,7 +193,6 @@ var Typeahead = React.createClass({
             <i className="fa fa-long-arrow-down" />
             to navigate
           </div>
-          <div>esc to dismiss</div>
         </div>
       </div>
     );
