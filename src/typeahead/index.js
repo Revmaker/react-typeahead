@@ -167,19 +167,35 @@ var Typeahead = React.createClass({
       return "";
     }
 
+    var options = this.props.maxVisible ? this.state.searchResults.slice(0, this.props.maxVisible) : this.state.searchResults;
+    if (options.length === 0) {
+      return "";
+    }
+
+    var style = { top: this.state.caretPosition.top + 30, left: this.state.caretPosition.left - 10 };
     return (
-      <this.props.customListComponent
-        ref="sel" options={this.props.maxVisible ? this.state.searchResults.slice(0, this.props.maxVisible) : this.state.searchResults}
-        areResultsTruncated={this.props.maxVisible && this.state.searchResults.length > this.props.maxVisible}
-        resultsTruncatedMessage={this.props.resultsTruncatedMessage}
-        caretPosition={this.state.caretPosition}
-        onOptionSelected={this._onOptionSelected}
-        allowCustomValues={this.props.allowCustomValues}
-        customValue={this._getCustomValue()}
-        customClasses={this.props.customClasses}
-        selectionIndex={this.state.selectionIndex}
-        defaultClassNames={this.props.defaultClassNames}
-        displayOption={Accessor.generateOptionToStringFor(this.props.displayOption)} />
+      <div className={this.props.customClasses.listWrapper} style={style}>
+        <this.props.customListComponent
+          ref="sel" options={options}
+          areResultsTruncated={this.props.maxVisible && this.state.searchResults.length > this.props.maxVisible}
+          resultsTruncatedMessage={this.props.resultsTruncatedMessage}
+          caretPosition={this.state.caretPosition}
+          onOptionSelected={this._onOptionSelected}
+          allowCustomValues={this.props.allowCustomValues}
+          customValue={this._getCustomValue()}
+          customClasses={this.props.customClasses}
+          selectionIndex={this.state.selectionIndex}
+          defaultClassNames={this.props.defaultClassNames}
+          displayOption={Accessor.generateOptionToStringFor(this.props.displayOption)} />
+        <div className={this.props.customClasses.footer}>
+          <div>
+            <i className="fa fa-long-arrow-up" />
+            <i className="fa fa-long-arrow-down" />
+            to navigate
+          </div>
+          <div>esc to dismiss</div>
+        </div>
+      </div>
     );
   },
 
@@ -367,7 +383,6 @@ var Typeahead = React.createClass({
     classes[this.props.className] = !!this.props.className;
     var classList = classNames(classes);
 
-    const style = { top: this.state.caretPosition.top + 30, left: this.state.caretPosition.left - 10 };
     var InputElement = this.props.textarea ? 'textarea' : 'input';
 
     return (
@@ -387,9 +402,7 @@ var Typeahead = React.createClass({
           onFocus={this._onFocus}
           onBlur={this._onBlur}
         />
-        <div className={this.props.customClasses.listWrapper} style={style}>
-          { this.state.showResults && this._renderIncrementalSearchResults() }
-        </div>
+        { this.state.showResults && this._renderIncrementalSearchResults() }
       </div>
     );
   },
