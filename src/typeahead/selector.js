@@ -17,7 +17,8 @@ var TypeaheadSelector = React.createClass({
     displayOption: React.PropTypes.func.isRequired,
     defaultClassNames: React.PropTypes.bool,
     areResultsTruncated: React.PropTypes.bool,
-    resultsTruncatedMessage: React.PropTypes.string
+    resultsTruncatedMessage: React.PropTypes.string,
+    caretPosition: React.PropTypes.object
   },
 
   getDefaultProps: function() {
@@ -86,8 +87,10 @@ var TypeaheadSelector = React.createClass({
       );
     }
 
+    const style = { top: this.props.caretPosition.top + 30, left: this.props.caretPosition.left - 10 };
+
     return (
-      <ul className={classList}>
+      <ul className={classList} style={style}>
         { customValue }
         { results }
       </ul>

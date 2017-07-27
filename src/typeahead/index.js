@@ -107,9 +107,11 @@ var Typeahead = React.createClass({
       // true when focused, false onOptionSelected
       showResults: false,
 
-
       // Number of rows to show for a text area
-      rows: 1
+      rows: 1,
+
+      // caret position for text area,
+      caretPosition: { top: 0, left: 0 }
     };
   },
 
@@ -170,6 +172,7 @@ var Typeahead = React.createClass({
         ref="sel" options={this.props.maxVisible ? this.state.searchResults.slice(0, this.props.maxVisible) : this.state.searchResults}
         areResultsTruncated={this.props.maxVisible && this.state.searchResults.length > this.props.maxVisible}
         resultsTruncatedMessage={this.props.resultsTruncatedMessage}
+        caretPosition={this.state.caretPosition}
         onOptionSelected={this._onOptionSelected}
         allowCustomValues={this.props.allowCustomValues}
         customValue={this._getCustomValue()}
@@ -314,7 +317,8 @@ var Typeahead = React.createClass({
       event.target.rows = newRows;
     }
 
-    this.setState({ rows: newRows });
+    var caretPosition = $(event.target).caret('position');
+    this.setState({ rows: newRows, caretPosition: caretPosition });
   },
 
   _onKeyDown: function(event) {
