@@ -367,7 +367,9 @@ var Typeahead = React.createClass({
     classes[this.props.className] = !!this.props.className;
     var classList = classNames(classes);
 
+    const style = { top: this.state.caretPosition.top + 30, left: this.state.caretPosition.left - 10 };
     var InputElement = this.props.textarea ? 'textarea' : 'input';
+
     return (
       <div className={classList}>
         { this._renderHiddenInput() }
@@ -385,7 +387,9 @@ var Typeahead = React.createClass({
           onFocus={this._onFocus}
           onBlur={this._onBlur}
         />
-        { this.state.showResults && this._renderIncrementalSearchResults() }
+        <div className={this.props.customClasses.listWrapper} style={style}>
+          { this.state.showResults && this._renderIncrementalSearchResults() }
+        </div>
       </div>
     );
   },
