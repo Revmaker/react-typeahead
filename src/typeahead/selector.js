@@ -33,9 +33,10 @@ var TypeaheadSelector = React.createClass({
     };
   },
 
-  componentDidUpdate() {
-    Object.keys(this.refs).forEach((key) => {
-      var ref = this.refs[key];
+  componentDidUpdate: function() {
+    var refs = this.refs;
+    Object.keys(this.refs).forEach(function (key) {
+      var ref = refs[key];
       if (ref.props.hover) {
         ReactDOM.findDOMNode(ref).scrollIntoView();
       }

@@ -210,7 +210,7 @@ var Typeahead = React.createClass({
     return this.state.searchResults[index];
   },
 
-  _replaceWord(value) {
+  _replaceWord: function(value) {
     var tokens = value.split(' ');
     var openBracketIndex = value.lastIndexOf('{{');
     var closeBracketIndex = value.lastIndexOf('}}');
@@ -366,7 +366,7 @@ var Typeahead = React.createClass({
 
   componentDidMount: function() {
     if (this.refs.entry) {
-      const numRows = Math.floor(this.refs.entry.scrollHeight / lineheight);
+      var numRows = Math.floor(this.refs.entry.scrollHeight / lineheight);
       this.setState({ rows: numRows });
     }
   },
